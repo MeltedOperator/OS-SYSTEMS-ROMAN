@@ -21,24 +21,18 @@ top_ips() {
 # TODO 2: Вывести все запросы с кодом 404
 
 count_404() {
-
 	local file="$1"
 	grep " 404 " "$file" | wc -l
 }
 
-#echo "=== Самый популярный URL ==="
 # TODO 3: Извлечь самый популярный URL
 #cat "$LOG" | awk '{print $7}' | sort | uniq -c | sort -rn | head -1
 #echo ""
 
 top_url() {
-
+	local file="$1"
+	cat "$file" | awk '{print $7}' | sort | uniq -c | sort -rn | head -1
 }
-
-#echo "=== СЕКЦИЯ 4 ==="
-#echo "=== Общее количество строк ==="
-# TODO 4: Вывести общее количество строк sample_access.log
-#wc -l "$LOG" | awk '{print $1}'
 
 main() {
 	local log_dir="${1:-$HOME/os-systems-work/os-lab01/logs/sample_access.log}"
@@ -50,7 +44,15 @@ main() {
 
 	echo "=== СЕКЦИЯ 2: Количество запросов с 404 ==="
 	count_404 "$log_dir"
+	echo ""
+
+	echo "=== СЕКЦИЯ 3: Самый популярный URL  ==="
+	top_url "$log_dir"
+
 }
+
+
+
 main "$@"
 
 
