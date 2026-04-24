@@ -1,27 +1,45 @@
 #!/bin/bash
-# warmup.sh — знакомство с пайп-цепочками
-# Запуск: ./warmup.sh sample_access.log
+# Запуск: ./analyze_v2 sample_access.log
+set -euo pipefail
 
-LOG="$1"
-echo "=== СЕКЦИЯ 1 ==="
-echo "=== Топ-5 IP по числу запросов ==="
+validate_args() {
+	local file="$1"
+	if [[ ! -f "$file" ]]; then
+    		echo "Файл '$1' не существует"
+    		exit 1
+	fi
+}
+
+#echo "=== СЕКЦИЯ 1 ==="
+#echo "=== Топ-5 IP по числу запросов ==="
 # TODO 1: Вывести ТОП-5 IP по числу запросов
-cat "$LOG" | awk '{print $1}' | sort | uniq -c | head -5
-echo ""
+top_ips() {
+	local file="$1"
+	cat "$file" | awk '{print $1}' | sort | uniq -c | head -5
+}
 
-echo "=== СЕКЦИЯ 2 ==="
-echo "=== Количество 404 ==="
+#echo "=== СЕКЦИЯ 2 ==="
+#echo "=== Количество 404 ==="
 # TODO 2: Вывести все запросы с кодом 404
-grep " 404 " "$LOG" | wc -l
-echo ""
+#grep " 404 " "$LOG" | wc -l
+#echo ""
 
-echo "=== СЕКЦИЯ 3 ==="
-echo "=== Самый популярный URL ==="
+#echo "=== СЕКЦИЯ 3 ==="
+#echo "=== Самый популярный URL ==="
 # TODO 3: Извлечь самый популярный URL
-cat "$LOG" | awk '{print $7}' | sort | uniq -c | sort -rn | head -1
-echo ""
+#cat "$LOG" | awk '{print $7}' | sort | uniq -c | sort -rn | head -1
+#echo ""
 
-echo "=== СЕКЦИЯ 4 ==="
-echo "=== Общее количество строк ==="
+#echo "=== СЕКЦИЯ 4 ==="
+#echo "=== Общее количество строк ==="
 # TODO 4: Вывести общее количество строк sample_access.log
-wc -l "$LOG" | awk '{print $1}'
+#wc -l "$LOG" | awk '{print $1}'
+
+main() {
+	local log_dir="${1:-$HOME/os-systems-work/os-lab01/logs/sample_access.log}"
+	validate_args "$log_dir"
+	top_ips "$log_dir"
+}
+main "$@"
+
+
