@@ -15,9 +15,11 @@ fi
 }
 
 main() {
+	local reserve_dir="$HOME/os-systems-work/os-hw02/backups"
 	local wanted_dir="$1"
 	validate_args "$1"
 	validate_dir "$1"
+	tar -czf "$reserve_dir"/backup-$(date +%F).tar.gz "$1"
 
 
 }
