@@ -1,0 +1,6 @@
+Inode original.txt 37681
+Inode hard_lynk.txt 37681
+Inode sym_link.txt 34496
+После rm original.txt:
+     hard_link.txt > работает
+     sym_link.txt > не работает
