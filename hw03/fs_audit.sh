@@ -52,6 +52,21 @@ show_top_files() {
        		 printf "  %-10s %-12s %s\n" "$inode" "$hr_size" "$path"
    	  done
 }
+df_vs_du() {
+	local df_used_kb 
+	local du_used_kb
+	local diff_kb
+
+	df_used_kb=$(df / | tail -n 1 | awk '{print $3}')
+	du_used_kb=$(sudo du -s / 2>/dev/null | awk '{print $1}')
+	
+	echo "=== df vs du (/) ==="
+	echo "df used: $(df -Th /)Kb"
+	echo "du used: $(sudo du -sh / 2>/dev/null)"
+	diff_kb=$((df_used_kb - du_used_kb))
+	echo "Разница: $diff_kb KB"
+
+}
 
 main() {
         local wanted_dir="${1:-}"
@@ -59,5 +74,6 @@ main() {
 	show_mounted_f 
 	show_dir_stats "$wanted_dir"
 	show_top_files "$wanted_dir"
+	df_vs_du
 }
 main "$@"
