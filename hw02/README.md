@@ -57,7 +57,7 @@ wsl --shutdown
 
 # 3)Работа с crontab
 Открываем:      crontab -e
-В окне GNU nano пишем: 0 */3 * * * /home/<ваше имя>/hw02/backup.sh /home/username/documents - запись каждые 3 часа
+В окне GNU nano пишем: 0 *3 * * * /home/<ваше имя>/hw02/backup.sh /home/username/documents - запись каждые 3 часа
 
 Чтобы закрыть и сохранить окно - Ctrl+O, Enter, Ctrl+X
 
