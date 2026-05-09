@@ -6,6 +6,14 @@ if [[ $EUID -ne 0 ]]; then
 	exit 1
 fi
 
+cleanup() {
+    echo "Очистка: убиваем фоновые процессы..."
+    # Убиваем все дочерние процессы (запущенные в фоне)
+    kill $(jobs -p) 2>/dev/null
+}
+
+trap cleanup EXIT INT TERM
+
 for _ in $(seq 1 3); do
     dd if=/dev/urandom of=/dev/null bs=1M &
 done
@@ -24,6 +32,3 @@ wait $pid1 $pid2
 # Шаг 3: Сравнить
 echo "=== nice 19 === " && cat "$out_file"
 echo "=== nice -10 === " && cat "$out_file"
-
-# Шаг 4: Убить фоновые
-kill %1 %2 %3 
