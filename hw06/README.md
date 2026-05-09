@@ -10,7 +10,8 @@ bash $ sudo ./scheduler_experiment.sh <имя директории где леж
 НЕ обычных пользователей для использования ресурсов ядер.
 
 # Пример вывода scheduler_experiment.sh
-''' === nice 19 ===
+``` 
+=== nice 19 ===
 
 real    0m 22.145s
 user    0m 0.007s
@@ -20,4 +21,5 @@ sys     0m 0.112s
 
 real    0m 0.097s
 user    0m 0.000s
-sys     0m 0.088s '''
+sys     0m 0.088s 
+```
