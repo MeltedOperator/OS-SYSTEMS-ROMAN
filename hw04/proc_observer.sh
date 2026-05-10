@@ -38,3 +38,19 @@ if [ "$count" -gt 0 ]; then
 else
   echo "Процессы не найдены"
 fi
+echo " "
+
+echo "=== СЕКЦИЯ 4: ИНФОРМАЦИЯ ИЗ /proc/$first_pid ==="
+if [ -d "/proc/$first_pid" ]; then
+  name=$(cat "/proc/$first_pid/comm" 2>/dev/null || echo "N/A")
+  state=$(cat "/proc/$first_pid/status" 2>/dev/null | grep '^State:' | awk '{print $2 " (" $3 ")"}' || echo "N/A")
+  vmrss=$(cat "/proc/$first_pid/status" 2>/dev/null | grep '^VmRSS:' | awk '{print $2 " " $3}' || echo "N/A")
+
+  printf "  Имя:       %s\n" "$name"
+  printf "  Состояние: %s\n" "$state"
+  printf "  VmRSS:     %s\n" "$vmrss"
+else
+  echo "  Процесс завершён"
+fi
+
+
