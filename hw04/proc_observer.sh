@@ -17,14 +17,24 @@ echo "Общий %CPU: ${cpu_sum}%"
 echo "Общий %MEM: ${mem_sum}%"
 echo " "
 
-echo "=== СЕКЦИЯ 3: File descriptors первого процесса ==="
+echo "=== СЕКЦИЯ 3: ПЕРВЫЙ PID, /proc И FD ==="
 if [ "$count" -gt 0 ]; then
   first_pid=$(echo "$procs" | awk '{print $1}' | sort -n | head -n 1)
-  echo "Первый (минимальный) PID: $first_pid"
+  echo "Первый PID: $first_pid"
   echo "Путь /proc: /proc/$first_pid"
-  echo "Пример: статус процесса:"
-  cat /proc/"$first_pid"/status | grep 'Name:' || echo "Не удалось прочитать"
+  
+  fd_dir="/proc/$first_pid/fd"
+  if [ -d "$fd_dir" ]; then
+    fd_count=$(ls -1 "$fd_dir" 2>/dev/null | wc -l)
+    echo "Количество FD: $fd_count"
+    cd "$fd_dir" 2>/dev/null && \
+      for fdfile in *; do
+        target=$(readlink "$fdfile" 2>/dev/null || echo '[deleted]')
+        printf "  %s -> %s\n" "$fdfile" "$target"
+      done || echo "Не удалось прочитать FD"
+  else
+    echo "Директория FD недоступна"
+  fi
 else
   echo "Процессы не найдены"
 fi
-
